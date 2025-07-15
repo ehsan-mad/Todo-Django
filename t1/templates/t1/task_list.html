@@ -1,0 +1,109 @@
+{% extends 't1/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}My Tasks - Task Manager{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="fas fa-tasks"></i> My Tasks</h1>
+            <a href="{% url 'task_create' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> New Task
+            </a>
+        </div>
+
+        <!-- Filters -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="get" class="row g-3">
+                    <div class="col-md-4">
+                        <label for="status" class="form-label">Status Filter</label>
+                        <select name="status" id="status" class="form-select">
+                            <option value="all" {% if status_filter == 'all' %}selected{% endif %}>All Tasks</option>
+                            <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Completed</option>
+                            <option value="pending" {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="category" class="form-label">Category Filter</label>
+                        <select name="category" id="category" class="form-select">
+                            <option value="all" {% if category_filter == 'all' %}selected{% endif %}>All Categories</option>
+                            <option value="work" {% if category_filter == 'work' %}selected{% endif %}>Work</option>
+                            <option value="personal" {% if category_filter == 'personal' %}selected{% endif %}>Personal</option>
+                            <option value="urgent" {% if category_filter == 'urgent' %}selected{% endif %}>Urgent</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end">
+                        <button type="submit" class="btn btn-outline-primary me-2">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                        <a href="{% url 'task_list' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-times"></i> Clear
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Task Statistics -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card text-bg-success">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-check-circle"></i> Completed Tasks</h5>
+                        <h2 class="card-text">{{ completed_tasks.count }}</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card text-bg-warning">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-clock"></i> Pending Tasks</h5>
+                        <h2 class="card-text">{{ pending_tasks.count }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Tasks -->
+        {% if pending_tasks %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="fas fa-hourglass-half"></i> Pending Tasks</h3>
+            </div>
+            <div class="card-body">
+                {% for task in pending_tasks %}
+                    {% include 't1/task_card.html' with task=task %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Completed Tasks -->
+        {% if completed_tasks %}
+        <div class="card">
+            <div class="card-header">
+                <h3 class="mb-0"><i class="fas fa-check-circle"></i> Completed Tasks</h3>
+            </div>
+            <div class="card-body">
+                {% for task in completed_tasks %}
+                    {% include 't1/task_card.html' with task=task %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if not pending_tasks and not completed_tasks %}
+        <div class="text-center py-5">
+            <i class="fas fa-tasks fa-3x text-muted mb-3"></i>
+            <h3 class="text-muted">No tasks found</h3>
+            <p class="text-muted">Start by creating your first task!</p>
+            <a href="{% url 'task_create' %}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Create Task
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
