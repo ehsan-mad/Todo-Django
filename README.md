@@ -172,22 +172,9 @@ python manage.py migrate
 - `/task/delete/<id>/` - Delete task
 - `/admin/` - Django admin panel
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-
-
 ### Development Tips
 
 - Use `python manage.py runserver` for development
-- Enable Django Debug Toolbar for debugging
-- Use Django's built-in testing framework
-- Follow Django best practices for security
 
 ## Screenshots or screencast showing app functionality
 
